@@ -20,9 +20,9 @@ k8s_version: "1.9.10"
 etcd_version: "3.3.9"
 
 cluster_name: "kubernetes-the-alta3-way"
-cluster_cidr: "192.168.0.0/16"
-cluster_dns: "172.16.3.10"
-pod_cidr: "192.168.1.0/24" # not currently used but lots of this string is out there in configs
+cluster_cidr: "10.20.0.0/16"
+cluster_dns: "10.19.0.10"
+pod_cidr: "10/21.0.0/16" # not currently used but lots of this string is out there in configs
 
 
 # dependencies and their destinations
@@ -142,8 +142,8 @@ auth_kubeconfigs:
      user: "admin"
 
 # master vars
-apiserver_cluster_ip: 172.16.3.1 
-service_cluster_ip_range: 172.16.3.0/24
+apiserver_cluster_ip: 10.19.0.1 
+service_cluster_ip_range: 10.19.0.0/16
 master_ips_csv: "{% for m in groups['masters'] %}{{ hostvars[m].ansible_host }}{% if not loop.last%},{% endif %}{% endfor %}"
 master_api_localhost_url: "https://127.0.0.1:6443" 
 

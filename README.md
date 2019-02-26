@@ -1,4 +1,4 @@
-# kubernetes-the-alta3-way
+# kubernetes-the-alta3-way for bare metal hosts
 Kubernetes Installation
 
 
