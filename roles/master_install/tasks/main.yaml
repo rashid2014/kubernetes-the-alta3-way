@@ -101,8 +101,8 @@
 
 - name: configure routes to nodes (pod routes)
   net_static_route:
-    prefix:   {{ hostvars[item].pod_prefix }}
-    mask:     {{ hostvars[item].pod_mask }}
-    next_hop: {{ hostvars[item].ansible_host }}
+    prefix:   "{{ hostvars[item].pod_prefix }}"
+    mask:     "{{ hostvars[item].pod_mask }}"
+    next_hop: "{{ hostvars[item].ansible_host }}"
   loop: "{{ groups['nodes'] }}"
 
