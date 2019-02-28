@@ -93,9 +93,16 @@
     mode: "0775"
   become: yes
 
+#- name: configure routes to nodes (pod routes)
+#  command: "ip route add {{ hostvars[item].cni_host_subnet }} via {{ hostvars[item].ansible_host }}"
+#  loop: "{{ groups['nodes'] }}"
+#  become: yes
+#  ignore_errors: True
+
 - name: configure routes to nodes (pod routes)
-  command: "ip route add {{ hostvars[item].cni_host_subnet }} via {{ hostvars[item].ansible_host }}"
+  net_static_route:
+    prefix:   {{ hostvars[item].pod_prefix }}
+    mask:     {{ hostvars[item].pod_mask }}
+    next_hop: {{ hostvars[item].ansible_host }}
   loop: "{{ groups['nodes'] }}"
-  become: yes
-  ignore_errors: True
 
