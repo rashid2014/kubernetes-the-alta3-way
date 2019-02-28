@@ -172,6 +172,43 @@ master_services:
    service_j2: "{{ role_path }}/files/kube-scheduler.service"
    service_path: "/etc/systemd/system/kube-scheduler.service"
 
+master_netconfig: |
+                    network:
+                        version: 2
+                        ethernets:
+                            # 1 gig ethernet right interface
+                            eno1:
+                                addresses: []
+                                dhcp4: true
+                                optional: true
+                            # 1 gig ethernet left interface
+                            eno2:
+                                addresses: []
+                                dhcp4: true
+                                optional: true
+                            # 10 gig ethernet right interface
+                            ens2f0:
+                                addresses: []
+                                dhcp4: true
+                                optional: true
+                            # 10 gig ethernet left interface
+                            ens2f1:
+                                addresses: []
+                                dhcp4: true
+                                nameservers:
+                                  addresses: {{ cluster_dns }}
+                                routes:
+                                - to: 10.21.0.0/16   
+                                  via: 10.16.2.31
+                                - to: 10.22.0.0/16   
+                                  via: 10.16.2.32
+#                                   "{% for host in {{ groups['nodes'] }} %}"
+#                                 - to: "{{ hostvars[item].cni_host_subnet }}"
+#                                   via: "{{ hostvars[item].ansible_host }}"
+#                                   "{% endfor %}"
+                    
+
+
 node_services: 
  - name: "kubelet"
    url: "https://storage.googleapis.com/kubernetes-release/release/v{{ k8s_version}}/bin/linux/amd64/kube-proxy"
@@ -194,6 +231,7 @@ node_dependencies:
  - name: "cri-containerd"
    url: "https://github.com/containerd/cri-containerd/releases/download/v1.0.0-beta.1/cri-containerd-1.0.0-beta.1.linux-amd64.tar.gz"
    dest: "/" 
+
 
 # rbac configs
 master_rbac_role:

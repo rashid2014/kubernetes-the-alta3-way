@@ -86,23 +86,26 @@
 # ----------------------------------------------------------------------------
 
 #TODO: these node-routes are hard coded, on a day far far from now, MAYBE templatized and smartly created
-- name: Create the pod-routes file for each node. Sets routes to get outbound connections from the calico network
-  copy: 
-    src: "{{  role_path  }}/files/node-routes"
-    dest: "/etc/network/if-up.d/node-routes"
-    mode: "0775"
+#- name: Create the pod-routes file for each node. Sets routes to get outbound connections from the calico network
+#  copy: 
+#    src: "{{  role_path  }}/files/node-routes"
+#    dest: "/etc/network/if-up.d/node-routes"
+#    mode: "0775"
+#  become: yes
+
+- name: configure persistant routes to nodes (pod routes)
+  template:
+    src: "{{ role_path }}/templates/50-cloud-init.yaml.j2"
+    dest:  /etc/netplan/50-cloud-init.yaml 
+    mode: 0644
+  register: masternet
   become: yes
 
-#- name: configure routes to nodes (pod routes)
-#  command: "ip route add {{ hostvars[item].cni_host_subnet }} via {{ hostvars[item].ansible_host }}"
-#  loop: "{{ groups['nodes'] }}"
-#  become: yes
-#  ignore_errors: True
-
-- name: configure routes to nodes (pod routes)
-  net_static_route:
-    prefix:   "{{ hostvars[item].pod_prefix }}"
-    mask:     "{{ hostvars[item].pod_mask }}"
-    next_hop: "{{ hostvars[item].ansible_host }}"
+- name: configure routes to nodes (pod routes) using IP ROUTE
+  command: "ip route add {{ hostvars[item].cni_host_subnet }} via {{ hostvars[item].ansible_host }}"
   loop: "{{ groups['nodes'] }}"
+  become: yes
+  ignore_errors: True
+  when: masternet.changed
+
 

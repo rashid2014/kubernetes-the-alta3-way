@@ -25,11 +25,12 @@
     mode: "0775"
   become: yes
 
-- name: configure routes to nodes (pod routes)
-  command: "ip route add {{ hostvars[item].cni_host_subnet }} via {{ hostvars[item].ansible_host }}"
-  loop: "{{ groups['nodes'] }}"
-  become: yes
-  ignore_errors: True
+# Comment out because routes from host to nodes only make sense whey on the k8s network. 
+#- name: configure routes to nodes (pod routes)
+#  command: "ip route add {{ hostvars[item].cni_host_subnet }} via {{ hostvars[item].ansible_host }}"
+#  loop: "{{ groups['nodes'] }}"
+#  become: yes
+#  ignore_errors: True
 
 
 
