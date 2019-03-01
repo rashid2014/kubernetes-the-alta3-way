@@ -45,7 +45,7 @@
   tasks: 
    - name: Deploy all keys to all admin nodes
      synchronize:
-       src: "~/k8s-certs"
+       src: "~/k8s-certs/"
        dest: "{{ cert_dir }}"
      when: run_makecerts
 
