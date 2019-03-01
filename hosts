@@ -12,3 +12,7 @@ node1 ansible_host="10.16.2.31" cni_host_subnet="10.21.0.0/16" pod_prefix="10.21
 node2 ansible_host="10.16.2.32" cni_host_subnet="10.22.0.0/16" pod_prefix="10.22.0.0" pod_mask="255.255.0.0"
 #node3 ansible_host="10.16.3.33" cni_host_subnet="10.23.0.0/16" pod_prefix="10.21.0.0" pod_mask="255.255.0.0"
 
+[k8s-admin-hosts]
+#seaneon-jmp ansible_host="10.16.1.102" ansible_user="seaneon"
+k8s-test-jmp ansible_host="10.16.1.115" ansible_user="ubuntu"
+bryfry-jmp ansible_host="10.16.1.110" ansible_user="bryfry"

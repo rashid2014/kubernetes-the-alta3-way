@@ -10,6 +10,19 @@
   roles:
    - name: make_certs
      when: run_makecerts
+
+- name: Deploy certs 
+  hosts: k8s-admin-hosts
+  tasks: 
+   - name: Deploy all keys to all admin nodes
+     synchronize:
+       src: "{{ cert_dir }}"
+       dest: "{{ cert_dir }}"
+     when: run_makecerts
+
+- name: kubeconfig 
+  hosts: k8s-admin-hosts
+  roles:
    - name: node_kube_config
      when: run_nodeconfig
    - name: localhost_config
