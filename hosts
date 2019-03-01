@@ -19,5 +19,5 @@ bryfry-jmp ansible_host="10.16.1.110" ansible_user="bryfry"
 stu-jmp ansible_host="10.16.1.109" ansible_user="stu"
 sam-jmp ansible_host="10.16.1.112" ansible_user="sam"
 #zach-jmp ansible_host="10.16.1.108" ansible_user="zach"
-tower-jmp ansible_host="10.16.1.110" ansible_user="ubuntu"
+tower-jmp ansible_host="10.3.200.9" ansible_user="ubuntu"
 
