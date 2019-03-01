@@ -5,6 +5,35 @@
    - name: bootstrap
      when: run_bootstrap
 
+- name: Create cert directories 
+  hosts: k8s-admin-hosts
+  tasks: 
+  - name: Create cert directories
+    file: 
+      path: "{{ item }}"
+      state: directory
+    with_items:
+    - "{{ cert_dir }}"
+    - "{{ config_dir }}"
+    - "{{ csr_dir }}"
+
+  - name: Install dependencies with get_url -> cfssl, cfssljson, kubectl
+    get_url:
+      url: "{{ item.url }}"
+      dest: "{{ item.dest }}"
+      mode: "{{ item.mode }}"
+    with_items:
+    - { url: "{{ cfssl_url }}", 
+        dest: /usr/local/bin/cfssl, 
+        mode: '0755' }
+    - { url: "{{ cfssljson_url }}", 
+        dest: /usr/local/bin/cfssljson, 
+        mode: '0755' }
+    - { url: "{{ kubectl.url }}",
+        dest: "{{ kubectl.path }}",
+        mode: '0755' }
+    become: yes    
+  
 - name: make certs & gen configs
   hosts: localhost
   roles:
@@ -16,7 +45,7 @@
   tasks: 
    - name: Deploy all keys to all admin nodes
      synchronize:
-       src: "{{ cert_dir }}"
+       src: "~/k8s-certs"
        dest: "{{ cert_dir }}"
      when: run_makecerts
 

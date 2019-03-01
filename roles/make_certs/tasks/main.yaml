@@ -1,29 +1,4 @@
 ---
-- name: Create cert directories
-  file: 
-    path: "{{ item }}"
-    state: directory
-  with_items:
-  - "{{ cert_dir }}"
-  - "{{ config_dir }}"
-  - "{{ csr_dir }}"
-
-- name: Install dependencies with get_url -> cfssl, cfssljson, kubectl
-  get_url:
-    url: "{{ item.url }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ item.mode }}"
-  with_items:
-  - { url: "{{ cfssl_url }}", 
-      dest: /usr/local/bin/cfssl, 
-      mode: '0755' }
-  - { url: "{{ cfssljson_url }}", 
-      dest: /usr/local/bin/cfssljson, 
-      mode: '0755' }
-  - { url: "{{ kubectl.url }}",
-      dest: "{{ kubectl.path }}",
-      mode: '0755' }
-  become: yes    
 
 # Deploy certificate configuration data 
 - name: Deply certificate generation configuration files
