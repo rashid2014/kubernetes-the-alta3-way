@@ -197,7 +197,7 @@ master_netconfig: |
                                 addresses: []
                                 dhcp4: true
                                 nameservers:
-                                  addresses: {{ cluster_dns }}
+                                  addresses: [{{ cluster_dns }}]
                                 routes:
                                 - to: 10.21.0.0/16   
                                   via: 10.16.2.31
