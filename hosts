@@ -16,3 +16,8 @@ node2 ansible_host="10.16.2.32" cni_host_subnet="10.22.0.0/16" pod_prefix="10.22
 #seaneon-jmp ansible_host="10.16.1.102" ansible_user="seaneon"
 k8s-test-jmp ansible_host="10.16.1.115" ansible_user="ubuntu"
 bryfry-jmp ansible_host="10.16.1.110" ansible_user="bryfry"
+stu-jmp ansible_host="10.16.1.109" ansible_user="stu"
+sam-jmp ansible_host="10.16.1.112" ansible_user="sam"
+#zach-jmp ansible_host="10.16.1.108" ansible_user="zach"
+tower-jmp ansible_host="10.16.1.110" ansible_user="ubuntu"
+
