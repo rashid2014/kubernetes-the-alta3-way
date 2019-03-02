@@ -22,7 +22,7 @@ etcd_version: "3.3.9"
 cluster_name: "kubernetes-the-alta3-way"
 cluster_cidr: "10.20.0.0/16"
 cluster_dns: "10.19.0.10"
-pod_cidr: "10/21.0.0/16" # not currently used but lots of this string is out there in configs
+pod_cidr: "10.0.0.0/8"  
 
 
 # dependencies and their destinations

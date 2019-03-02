@@ -86,7 +86,7 @@
    - name: rbac
      when: run_rbac
      
-- name: deploy k8s nodes
+- name: install containerd, kubelet, kube-proxy, and certs on NODES
   hosts: nodes
   gather_facts: False
   roles:

@@ -1,4 +1,3 @@
-
 [masters]
 master1 ansible_host="10.16.2.21"
 master2 ansible_host="10.16.2.22"
@@ -14,10 +13,10 @@ node2 ansible_host="10.16.2.32" cni_host_subnet="10.22.0.0/16" pod_prefix="10.22
 
 [k8s-admin-hosts]
 #seaneon-jmp ansible_host="10.16.1.102" ansible_user="seaneon"
-k8s-test-jmp ansible_host="10.16.1.115" ansible_user="ubuntu"
-bryfry-jmp ansible_host="10.16.1.110" ansible_user="bryfry"
-stu-jmp ansible_host="10.16.1.109" ansible_user="stu"
-sam-jmp ansible_host="10.16.1.112" ansible_user="sam"
-#zach-jmp ansible_host="10.16.1.108" ansible_user="zach"
-tower-jmp ansible_host="10.3.200.9" ansible_user="ubuntu"
+k8s-test-jmp ansible_host="10.16.1.115" ansible_user="ubuntu" ansible_ssh_private_key_file=~/.ssh/deploy-k8s-key
+bryfry-jmp ansible_host="10.16.1.110" ansible_user="bryfry" ansible_ssh_private_key_file=~/.ssh/deploy-k8s-key
+stu-jmp ansible_host="10.16.1.109" ansible_user="stu" ansible_ssh_private_key_file=~/.ssh/deploy-k8s-key
+sam-jmp ansible_host="10.16.1.112" ansible_user="sam" ansible_ssh_private_key_file=~/.ssh/deploy-k8s-key
+#zach-jmp ansible_host="10.16.1.108" ansible_user="zach" ansible_ssh_private_key_file=~/.ssh/deploy-k8s-key
+tower-jmp ansible_host="10.3.200.9" ansible_user="ubuntu" ansible_ssh_private_key_file=~/.ssh/deploy-k8s-key
 
