@@ -7,9 +7,9 @@ master3 ansible_host="10.16.2.23"
 masters
 
 [nodes]
-node1 ansible_host="10.16.2.31" cni_host_subnet="10.21.0.0/16" pod_prefix="10.21.0.0" pod_mask="255.255.0.0"
-node2 ansible_host="10.16.2.32" cni_host_subnet="10.22.0.0/16" pod_prefix="10.22.0.0" pod_mask="255.255.0.0"
-#node3 ansible_host="10.16.3.33" cni_host_subnet="10.23.0.0/16" pod_prefix="10.21.0.0" pod_mask="255.255.0.0"
+node1 ansible_host="10.16.2.31" cni_host_subnet="10.31.0.0/16" 
+node2 ansible_host="10.16.2.32" cni_host_subnet="10.32.0.0/16" 
+#node3 ansible_host="10.16.3.33" cni_host_subnet="10.33.0.0/16"
 
 [k8s-admin-hosts]
 #seaneon-jmp ansible_host="10.16.1.102" ansible_user="seaneon"

@@ -169,7 +169,7 @@
 - name: Delete old portmap file
   file:
     state: absent
-    path: "/opt/cni/bin/portmap
+    path: /opt/cni/bin/portmap
   become: yes
   
 - name: Download file with check (sha256)
