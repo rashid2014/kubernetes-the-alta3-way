@@ -19,6 +19,10 @@ run_trusted_ca: "{{ run_all }}"
 k8s_version: "1.9.10"
 etcd_version: "3.3.9"
 
+# default, override with host vars
+xenial: false
+
+
 cluster_name: "kubernetes-the-alta3-way"
 
 # cluster-cidr is the range of IP addresses for all pod nets usually called the "Pod Network"
@@ -27,6 +31,9 @@ cluster_name: "kubernetes-the-alta3-way"
 # The routing table of the router handling your part of infrastructure network will need to be updated with routes 
 # to these pod subnets. Do not confuse this with the Cluster Service Network which is defined below.
 cluster_cidr: "10.32.0.0/12"
+
+# The IPv4 Pool calico creates if none exists at start up. 
+calico_ipv4pool_cidr: "{{ cluster_cidr }}"
 
 # dependencies and their destinations
 cfssl_url: "https://pkg.cfssl.org/R1.2/cfssl_linux-amd64"
@@ -215,8 +222,8 @@ master_netconfig: |
                                 - to: 10.32.0.0/16   
                                   via: 10.16.2.32
 #                                   "{% for host in {{ groups['nodes'] }} %}"
-#                                 - to: "{{ hostvars[item].cni_host_subnet }}"
-#                                   via: "{{ hostvars[item].ansible_host }}"
+#                                 - to:  "{{ hostvars[host].cni_host_subnet }}"
+#                                   via: "{{ hostvars[host].ansible_host }}"
 #                                   "{% endfor %}"
                     
 

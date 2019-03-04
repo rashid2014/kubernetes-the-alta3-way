@@ -166,18 +166,18 @@
 #-----------------------------------------------------------------------------
 # Install CNI patch  https://github.com/containerd/cri/issues/619
 #-----------------------------------------------------------------------------
-- name: Delete old portmap file
-  file:
-    state: absent
-    path: /opt/cni/bin/portmap
-  become: yes
-  
-- name: Download file with check (sha256)
-  get_url:
-    url: https://github.com/projectcalico/cni-plugin/releases/download/v1.9.1/portmap
-    dest: /opt/cni/bin/
-    mode: 0755
-  become: yes
+#- name: Delete old portmap file
+#  file:
+#    state: absent
+#    path: /opt/cni/bin/portmap
+#  become: yes
+#  
+#- name: Download file with check (sha256)
+#  get_url:
+#    url: https://github.com/projectcalico/cni-plugin/releases/download/v1.9.1/portmap
+#    dest: /opt/cni/bin/
+#    mode: 0755
+#  become: yes
   
 #-----------------------------------------------------------------------------
 # Start the Worker Services 

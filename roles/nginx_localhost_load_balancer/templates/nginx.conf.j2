@@ -1,4 +1,6 @@
+{% if not xenial %}
 load_module /usr/lib/nginx/modules/ngx_stream_module.so;
+{% endif %}
 
 user www-data;
 pid /run/nginx.pid;

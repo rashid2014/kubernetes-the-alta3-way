@@ -1,0 +1,5 @@
+#!/bin/bash
+ip route add 10.32.0.0/16 via 10.16.2.31
+ip route add 10.33.0.0/16 via 10.16.2.32
+ip route add 10.34.0.0/16 via 10.16.2.33
+
