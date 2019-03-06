@@ -1,4 +1,4 @@
-# kubernetes-the-alta3-way for bare metal hosts
+# kubernetes-the-alta3-way for bare metal hosts Version 1.12 "v12"
 Kubernetes Installation
 
 
