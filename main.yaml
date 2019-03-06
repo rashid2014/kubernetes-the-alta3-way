@@ -35,7 +35,7 @@
     become: yes    
   
 - name: make certs & gen configs
-  hosts: localhost
+  hosts: k8s-admin-hosts
   roles:
    - name: make_certs
      when: run_makecerts
@@ -94,7 +94,7 @@
      when: run_nodes
 
 - name: deploy k8s services
-  hosts: localhost
+  hosts: k8s-admin-hosts
   gather_facts: False
   roles:
    - name: calico

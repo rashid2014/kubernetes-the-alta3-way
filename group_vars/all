@@ -45,7 +45,7 @@ kubectl:
   path: "/usr/local/bin/kubectl"
 
 # config and cert dirs
-#localhost_home_dir: "{{ lookup('env', 'HOME') }}"
+localhost_home_dir: "{{ lookup('env', 'HOME') }}"
 home_dir: "{{ ansible_env.HOME }}"
 cert_dir: "{{ home_dir }}/k8s-certs"
 config_dir: "{{ home_dir }}/k8s-config"
