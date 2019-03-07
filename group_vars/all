@@ -16,7 +16,7 @@ run_rbac: "{{ run_all }}"
 run_trusted_ca: "{{ run_all }}"
 
 # versions
-k8s_version: "1.9.10"
+k8s_version: "1.12.0"
 etcd_version: "3.3.9"
 
 # default, override with host vars
@@ -153,8 +153,9 @@ auth_kubeconfigs:
      user: "admin"
 
 
-
-# MASTER VARS
+# -----------------------------------
+#     MASTER VARS
+# -----------------------------------
 # The SERVICE NETWORK is a **completely virtual** network, which is used to assign IP addresses to Kubernetes Services,
 # which you will be creating. A Service is a frontend to a Deployment. It must be noted that IP from this network are
 # never assigned to any of the interfaces of any of the nodes/VMs, etc. These (Service IPs) are used behind the scenes
@@ -163,6 +164,7 @@ apiserver_cluster_ip: "10.20.0.1"
 service_cluster_ip_range: "10.20.0.0/16"
 cluster_dns: "10.20.0.10"
 
+# So, jinja2 for loops DO WORK in a var file as we see here...
 master_ips_csv: "{% for m in groups['masters'] %}{{ hostvars[m].ansible_host }}{% if not loop.last%},{% endif %}{% endfor %}"
 master_api_localhost_url: "https://127.0.0.1:6443" 
 
@@ -191,6 +193,9 @@ master_services:
    service_j2: "{{ role_path }}/files/kube-scheduler.service"
    service_path: "/etc/systemd/system/kube-scheduler.service"
 
+
+# TODO STEAL the method used in openstack to discover the predictable intface names, register the value, eliminate the following...
+# This is done this way to try and keep all the config in this file if possible.
 master_netconfig: |
                     network:
                         version: 2
@@ -227,32 +232,50 @@ master_netconfig: |
 #                                   "{% endfor %}"
                     
 
-
+#---------------------------------------------
+# NODE SERVICES
+# --------------------------------------------
 node_services: 
- - name: "kubelet"
+ - name: "kube-proxy"
+# - name: "kubelet"  ???? Why were these backwards???
    url: "https://storage.googleapis.com/kubernetes-release/release/v{{ k8s_version}}/bin/linux/amd64/kube-proxy"
    path: "/usr/local/bin/kube-proxy"
    mode: "0775"
    service_j2: "{{ role_path }}/templates/kube-proxy.service.j2"
    service_path: "/etc/systemd/system/kube-proxy.service" 
 
- - name: "kube-proxy"
+ - name: "kubelet"
+# - name: "kube-proxy" ??? Why were these backwards???
    url: "https://storage.googleapis.com/kubernetes-release/release/v{{k8s_version}}/bin/linux/amd64/kubelet"
    path: "/usr/local/bin/kubelet"
    mode: "0775"
    service_j2: "{{ role_path }}/templates/kubelet.service.j2"
    service_path: "/etc/systemd/system/kubelet.service" 
 
+
+#  https://github.com/opencontainers/runc/releases/download/v1.0.0-rc5/runc.amd64 \
+#  https://github.com/containernetworking/plugins/releases/download/v0.6.0/cni-plugins-amd64-v0.6.0.tgz \
+
+
 node_dependencies:
+# Containerd was designed to abstract syscalls or OS specific functionality
  - name: "containerd"
-   url: "https://github.com/containernetworking/plugins/releases/download/v0.6.0/cni-plugins-amd64-v0.6.0.tgz"
+   url:"https://github.com/containerd/containerd/releases/download/v1.2.0-rc.0/containerd-1.2.0-rc.0.linux-amd64.tar.gz"
    dest: "/opt/cni/bin/"
+# cri-containerd is an implementation of CRI for containerd.  Yeah, OK, so what is "CRI" then"
+# CRI is an internal plugin API named Container Runtime Interface (CRI) to provide easy access to different container runtimes.
  - name: "cri-containerd"
    url: "https://github.com/containerd/cri-containerd/releases/download/v1.0.0-beta.1/cri-containerd-1.0.0-beta.1.linux-amd64.tar.gz"
    dest: "/" 
 
+# nodes 
+localhost_lb_apiserver_address: "https://127.0.0.1:6443"
+kubelet_kubeconfig_path: "/var/lib/kubelet/kubeconfig"
+kube_proxy_kubeconfig_path: "/var/lib/kube-proxy/kubeconfig"
 
+#---------------------------------------------
 # rbac configs
+# --------------------------------------------
 master_rbac_role:
   file: "{{ role_path }}/files/rbac-clusterrole.yaml"
   path: "{{ config_dir }}/rbac-clusterrole.yaml"
@@ -260,8 +283,10 @@ master_rbac_role:
 master_rbac_rolebind:
   file: "{{ role_path }}/files/rbac-clusterrolebind.yaml"
   path: "{{ config_dir }}/rbac-clusterrolebind.yaml"
- 
+
+# -------------------------------------------- 
 # etcd
+# --------------------------------------------
 etcd_arch: "amd64"
 etcd_file_name: "etcd-v{{ etcd_version }}-linux-{{ etcd_arch }}"
 etcd_tar_name: "{{ etcd_file_name }}.tar.gz"
@@ -274,7 +299,4 @@ etcd_cluster_urls: "{% for e in groups['etcd'] %}{{ hostvars[e].inventory_hostna
 master_etcd_cluster_urls: "{% for e in groups['etcd'] %}https://{{ hostvars[e].ansible_host }}:{{ etcd_port.client }}{% if not loop.last%},{% endif %}{% endfor %}"
 calico_etcd_endpoints: "{{ master_etcd_cluster_urls }}"
 
-# nodes 
-localhost_lb_apiserver_address: "https://127.0.0.1:6443"
-kubelet_kubeconfig_path: "/var/lib/kubelet/kubeconfig"
-kube_proxy_kubeconfig_path: "/var/lib/kube-proxy/kubeconfig"
+
