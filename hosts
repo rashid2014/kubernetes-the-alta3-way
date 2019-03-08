@@ -1,15 +1,17 @@
 [masters]
-master1 ansible_host="10.16.2.121" xenial=true  
-master2 ansible_host="10.16.2.122" xenial=true  
-master3 ansible_host="10.16.2.123" xenial=true  
+master1 ansible_host="10.16.2.121" xenial=true home_dir="/home/ubuntu" 
+master2 ansible_host="10.16.2.122" xenial=true home_dir="/home/ubuntu"
+master3 ansible_host="10.16.2.123" xenial=true home_dir="/home/ubuntu"
 
 [etcd:children]
 masters
 
 [nodes]
-node1  ansible_host="10.16.2.131"  cni_host_subnet="10.32.0.0/16" xenial=true  
-node2  ansible_host="10.16.2.132"  cni_host_subnet="10.33.0.0/16" xenial=true  
-node3  ansible_host="10.16.2.133"  cni_host_subnet="10.34.0.0/16" xenial=true  
+node1  ansible_host="10.16.2.131"  cni_host_subnet="10.32.0.0/16" xenial=true  home_dir="/home/ubuntu"
+node2  ansible_host="10.16.2.132"  cni_host_subnet="10.33.0.0/16" xenial=true  home_dir="/home/ubuntu"
+node3  ansible_host="10.16.2.133"  cni_host_subnet="10.34.0.0/16" xenial=true  home_dir="/home/ubuntu"
 
 [k8s-admin-hosts]
-tower ansible_host="10.16.2.9" ansible_user="ubuntu" ansible_ssh_private_key_file=~/.ssh/deploy-k8s-key 
+tower ansible_host="10.16.2.9" ansible_user="ubuntu" ansible_ssh_private_key_file=~/.ssh/deploy-k8s-key home_dir="/home/ubuntu"
+ 
+# TODO: home_dir above should be unecessary. in group_vars/all, there is a lookup on env now.
