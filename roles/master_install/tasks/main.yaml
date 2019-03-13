@@ -85,17 +85,19 @@
 #  \____/  \_/\_| |_/\_/  \___/ \____/  \_| \_|\___/ \___/  \_/ \____/\____/ 
 # ----------------------------------------------------------------------------
 
-#TODO: these node-routes are hard coded, on a day far far from now, MAYBE templatized and smartly created
+#TODO: Test the node-routes are templatized 
 - name: Create the pod-routes file for each node. Sets routes to get outbound connections from the calico network
-  copy: 
-    src: "{{  role_path  }}/files/node-routes"
+  template: 
+    #src: "{{  role_path  }}/files/node-routes"
+    src: "{{  role_path  }}/templates/node-routes.j2"
     dest: "/etc/network/if-up.d/node-routes"
     mode: "0775"
   become: yes
+  when: xenial
 
 - name: configure routes to nodes (pod routes)
   command: "ip route add {{ hostvars[item].cni_host_subnet }} via {{ hostvars[item].ansible_host }}"
   loop: "{{ groups['nodes'] }}"
   become: yes
   ignore_errors: True
-
+  when: not xenial

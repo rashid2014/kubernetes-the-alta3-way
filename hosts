@@ -1,14 +1,27 @@
 
 [masters]
-master-1 ansible_host="172.16.1.5"
-master-2 ansible_host="172.16.1.6"
-master-3 ansible_host="172.16.1.7"
+#master1 ansible_host="10.16.2.226" xenial=false home_dir="/home/ubuntu"
+#master2 ansible_host="10.16.2.227" xenial=false home_dir="/home/ubuntu"
+#master3 ansible_host="10.16.2.225" xenial=false home_dir="/home/ubuntu"
+
+master1 ansible_host="ceph-001.localdomain" xenial=false home_dir="/home/ubuntu"
+master2 ansible_host="ceph-002.localdomain" xenial=false home_dir="/home/ubuntu"
+master3 ansible_host="ceph-003.localdomain" xenial=false home_dir="/home/ubuntu"
+
 
 [etcd:children]
 masters
 
 [nodes]
-node-1 ansible_host="172.16.1.8" cni_host_subnet="192.168.1.0/24"
-node-2 ansible_host="172.16.1.9" cni_host_subnet="192.168.2.0/24"
-node-3 ansible_host="172.16.1.10" cni_host_subnet="192.168.3.0/24"
+node1  ansible_host="ceph-004.localdomain"  cni_host_subnet="192.168.1.0/24" xenial=false  home_dir="/home/ubuntu"
+node2  ansible_host="ceph-005.localdomain"  cni_host_subnet="192.168.2.0/24" xenial=false  home_dir="/home/ubuntu"
+node3  ansible_host="ceph-006.localdomain"  cni_host_subnet="192.168.3.0/24" xenial=false  home_dir="/home/ubuntu"
 
+#node1  ansible_host="ceph-004.localdomain"  cni_host_subnet="192.168.1.0/24" xenial=true  home_dir="/home/ubuntu"
+#node2  ansible_host="ceph-005.localdomain"  cni_host_subnet="192.168.2.0/24" xenial=true  home_dir="/home/ubuntu"
+#node3  ansible_host="ceph-006.localdomain"  cni_host_subnet="192.168.3.0/24" xenial=true  home_dir="/home/ubuntu"
+
+[k8s-admin-hosts]
+beachhead-ceph-001 ansible_host="10.16.2.223" ansible_user="ubuntu" ansible_ssh_private_key_file=~/.ssh/deploy-k8s-key home_dir="/home/ubuntu"
+
+# TODO: home_dir above should be unecessary. in group_vars/all, there is a lookup on env now.

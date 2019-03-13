@@ -1,0 +1,4 @@
+#!/bin/bash
+{% for n in groups ['nodes'] %}
+ip route add {{ hostvars[n].cni_host_subnet }} via {{ lookup('dig', hostvars[n].ansible_host) }}
+{% endfor %}
